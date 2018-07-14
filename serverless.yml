@@ -8,6 +8,21 @@ plugins:
 # serverless-webpack configuration
 # Enable auto-packing of external modules
 custom:
+  # Our stage is based on what is passed in when running serverless commands. 
+  # Creating a custom variable named 'stage' to we can use it with the "serverless deploy --stage $STAGE" command
+  # If no stage is set fall back to what we have set in the provider section.
+  # So ${opt:stage, self:provider.stage}, is telling Serverless to first look for the opt:stage 
+  # (the one passed in through the command line), and then fallback to self:provider.stage (the one in the provider block.
+  stage: ${opt:stage, self:provider.stage}
+  # Create a custom variable 'tableThroughputs'
+  # Set our DynamoDB throughput for prod and all other non-prod stages.
+  tableThroughputs:
+    prod: 5
+    default: 1
+  # Create a custom variable 'tableThroughput' set to look for the relevant option in 'tableThroughputs'
+  # Fall back to default if not stage is passed in
+  tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  # Load our webpack config
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -18,6 +33,13 @@ provider:
   stage: dev
   region: eu-central-1
 
+  # These environment variables are made available to our functions under process.env.
+  # For example: process.env.tableName would be set to the DynamoDB table name for this stage.
+  environment:
+    tableName:
+      # Getting our tableName from the 'NotesTable' ressource
+      Ref: NotesTable
+  
   # 'iamRoleStatement' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
   iamRoleStatements:
@@ -30,7 +52,9 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:eu-central-1:*:*"
+      # Restrict our IAM role permissions to the specific table for the stage
+      Resource:
+        - "Fn::GetAtt": [ NotesTable, Arn ]
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -95,3 +119,8 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}

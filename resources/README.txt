@@ -1,0 +1,1 @@
+This directory keeps all the resources for our infrastructure

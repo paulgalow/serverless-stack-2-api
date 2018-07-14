@@ -1,0 +1,25 @@
+Resources:
+  # Describing a DynamoDB table resource called 'NotesTable'
+  NotesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Generate a name based on the stage
+      TableName: ${self:custom.stage}-notes
+      AttributeDefinitions:
+        - AttributeName: userId
+          # Data type for the attribute: S = String
+          AttributeType: S
+        - AttributeName: nodeId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          # KeyType - The role that the key attribute will assume. 
+          # HASH = partition key
+          KeyType: HASH
+        - AttributeName: noteId
+          # RANGE = sort key
+          KeyType: RANGE
+      #  Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
