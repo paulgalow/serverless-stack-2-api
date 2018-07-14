@@ -10,7 +10,7 @@ Resources:
         - AttributeName: userId
           # Data type for the attribute: S = String
           AttributeType: S
-        - AttributeName: nodeId
+        - AttributeName: noteId
           AttributeType: S
       KeySchema:
         - AttributeName: userId

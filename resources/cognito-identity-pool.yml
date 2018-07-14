@@ -23,7 +23,7 @@ Resources:
         Ref: CognitoIdentityPool
       Roles:
         authenticated:
-          Fn:GetAtt: [CognitoAuthRole, Arn]
+          Fn::GetAtt: [CognitoAuthRole, Arn]
 
   # IAM role used for authenticated users
   CognitoAuthRole:
@@ -67,7 +67,7 @@ Resources:
                       - 'arn:aws:execute-api:'
                       - Ref: AWS::Region
                       - ':'
-                      - Ref: AWS::AcountId
+                      - Ref: AWS::AccountId
                       - ':'
                       - Ref: ApiGatewayRestApi
                       - '/*'
@@ -81,7 +81,7 @@ Resources:
                   Fn::Join:
                     - ''
                     -
-                      - Fn:GetAtt: [AttachmentsBucket, Arn]
+                      - Fn::GetAtt: [AttachmentsBucket, Arn]
                       - '/private/'
                       - '$'
                       - '{cognito-identity.amazonaws.com:sub}/*'
