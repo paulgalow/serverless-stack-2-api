@@ -1,3 +1,4 @@
+# CloudFormation template
 Resources:
   CognitoUserPool:
     Type: AWS::Cognito::UserPool

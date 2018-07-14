@@ -1,3 +1,4 @@
+# CloudFormation template
 Resources:
   # Describing a DynamoDB table resource called 'NotesTable'
   NotesTable:

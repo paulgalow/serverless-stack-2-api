@@ -1,3 +1,4 @@
+# CloudFormation template
 Resources:
   AttachmentsBucket:
     Type: AWS::S3::Bucket
