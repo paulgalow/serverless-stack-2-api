@@ -26,6 +26,9 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  # Load our secret environment variables from env.yml based on the current stage.
+  # Fallback to default if it is not in prod.
+  environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
 
 provider:
   name: aws
@@ -37,8 +40,9 @@ provider:
   # For example: process.env.tableName would be set to the DynamoDB table name for this stage.
   environment:
     tableName:
-      # Getting our tableName from the 'NotesTable' ressource
+      # Getting our tableName from the 'NotesTable' resource
       Ref: NotesTable
+    stripeSecretKey: ${self:custom.environment.stripeSecretKey}
   
   # 'iamRoleStatement' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
