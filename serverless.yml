@@ -17,7 +17,7 @@ custom:
   # Create a custom variable 'tableThroughputs'
   # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
-    prod: 5
+    prod: 1
     default: 1
   # Create a custom variable 'tableThroughput' set to look for the relevant option in 'tableThroughputs'
   # Fall back to default if not stage is passed in
