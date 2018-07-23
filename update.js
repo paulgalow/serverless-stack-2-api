@@ -1,3 +1,4 @@
+// API that allows a user to update a note with a new note object given its id.
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
@@ -23,6 +24,7 @@ export async function main(event, context, callback) {
     ReturnValues: "ALL_NEW"
   };
 
+  // Call DynamoDB to update an object
   try {
     const result = await dynamoDbLib.call("update", params);
     callback(null, success({ status: true }));

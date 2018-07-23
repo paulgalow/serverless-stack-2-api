@@ -1,3 +1,4 @@
+// API that returns a list of all the notes a user has
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 

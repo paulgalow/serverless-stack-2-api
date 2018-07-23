@@ -14,6 +14,7 @@ export async function main(event, context, callback) {
     }
   };
 
+  // Call DynamoDB to delete an object
   try {
     const result = await dynamoDbLib.call("delete", params);
     callback(null, success({ status: true }));

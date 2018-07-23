@@ -1,3 +1,4 @@
+// API to retrieve a note given its id
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
@@ -14,6 +15,7 @@ export async function main(event, context, callback) {
     }
   };
 
+  // Call DynamoDB to get an object
   try {
     const result = await dynamoDbLib.call("get", params);
     if (result.Item) {
